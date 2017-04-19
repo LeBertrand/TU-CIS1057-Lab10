@@ -1,0 +1,6 @@
+create structure to hold song info
+	create interface for reading text into structure
+create method that can sort song structures by any field
+take user input to decide how to sort
+sort
+print with correct layout
