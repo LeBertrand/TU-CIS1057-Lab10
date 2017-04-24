@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 #ifndef ALBUM_DATA_H
 #define ALBUM_DATA_H
 
@@ -72,7 +73,7 @@ void selection_sort_title(song_t listing[], int length)
         for( index = sorted_until; index < length; index++)
         {
             //compare current song title to earliest title so far
-            int comp = strcmp(listing[index], listing[loc_smallest]);
+            int comp = strcmp(listing[index].title, listing[loc_smallest].title);
             //case: title at index should come first
             if(comp < 0)
             {
@@ -106,8 +107,8 @@ int read_listing(FILE *input, song_t song_list[])
     while(1)
     {
 // TODO (Shmuel Jacobs#1#04/20/17): Clean code: define break condition better, or at least create control variable.
-        //read in next line
-        char done = (char) fgets(next_line, MAX_SONG_TITLE, input);
+        //read in next line, and immediately check first character
+        char done = * fgets(next_line, MAX_SONG_TITLE, input);
         //case: reached end of file
         if(done == EOF)
         {
