@@ -24,6 +24,8 @@ main()
 
 	selection_sort_title(playlist, 3);
 	FILE* output = fopen("sort_driver_output.txt", "w");
-	fprintf(output, playlist[0].title, playlist[1].title, playlist[2].title);
+	fprintf(output, "%s | ", playlist[0].title);
+	fprintf(output, "%s | ", playlist[1].title);
+	fprintf(output, "%s | ", playlist[2].title);
 	fclose(output);
 }

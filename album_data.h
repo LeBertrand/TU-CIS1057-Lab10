@@ -108,9 +108,9 @@ int read_listing(FILE *input, song_t song_list[])
     {
 // TODO (Shmuel Jacobs#1#04/20/17): Clean code: define break condition better, or at least create control variable.
         //read in next line, and immediately check first character
-        char done = * fgets(next_line, MAX_SONG_TITLE, input);
+        char *done = fgets(next_line, MAX_SONG_TITLE, input);
         //case: reached end of file
-        if(done == EOF)
+        if(*done == EOF)
         {
             break;
         }
