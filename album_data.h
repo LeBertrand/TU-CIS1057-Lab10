@@ -26,7 +26,9 @@ Just move the nodes */
 void swap_songs(song_t*, song_t*);
 
 //string makes space for Track, pad, Title, pad, Artist, pad, minutes, seconds
-const char* TA_FORMAT_STRING = "\t%-5d%-40s%-40s%d:%2.2d\n";
+const char* TITLE_FORMAT_STRING = "\t%-5d%-30s%-50s%d:%2.2d\n";
+
+const char* ARTIST_FORMAT_STRING = "\t%-5d%-50s%-30s%d:%2.2d\n";
 //Track, pad, minutes, seconds, pad, Title, pad, Artist
 const char* TIME_FORMAT_STRING = "\t%-5d%d:%-40.2d%-40s%5s\n";
 
@@ -213,29 +215,29 @@ void print_by_title(song_t song, int i);
 int read_listing(FILE *input, song_t song_list[])
 {
     //keep track of what track reached in the listings
-    int song_number = 0;
+    int song_number = 1;
 
     //last album name read in
     char current_album[MAX_ALBUM_ARTIST];
 
     //store next line for decision making
     char next_line[MAX_ALBUM_ARTIST];
-    while(1)
+    char* done = fgets(next_line, MAX_ALBUM_ARTIST, input) ;
+    
+    do
     {
-// TODO (Shmuel Jacobs#1#04/20/17): Clean code: define break condition better, or at least create control variable.
-        //read in next line, and immediately check first character
-        char *done = fgets(next_line, MAX_ALBUM_ARTIST, input);
-        
-        //case: reached end of file
-        if(*done == EOF)
-        {
-            break;
-        }
+        // //case: reached end of file
+        // if(*done == EOF)
+        // {
+        //     break;
+        // }
         //case: line doesn't hold a title
         if(next_line[0] != '*')
         {
-            next_line[strlen(next_line) - 1] = '\0';
             song_t track_builder;
+            
+            //get title
+            next_line[strlen(next_line) - 1] = '\0';
             strcpy(track_builder.title, next_line);
             //get artist
             fgets(next_line, MAX_ALBUM_ARTIST, input);
@@ -247,13 +249,13 @@ int read_listing(FILE *input, song_t song_list[])
             track_builder.seconds = time;
             
             //put into list
-            song_list[song_number] = track_builder;
+            song_list[song_number - 1] = track_builder;
                 
-            //print_by_title(song_list[song_number], 1);
             //done with this song--advance index by one
             song_number++;
+            done = fgets(next_line, MAX_ALBUM_ARTIST, input) ;
         }
-    }
+    }while(*done != EOF);
     return song_number;
 }
 
@@ -298,12 +300,12 @@ int prompt_sort()
 
 void print_by_title(song_t song, int i)
 {
-    printf(TA_FORMAT_STRING, i, song.title, song.artist, song.seconds/60, song.seconds%60);
+    printf(TITLE_FORMAT_STRING, i, song.title, song.artist, song.seconds/60, song.seconds%60);
 }
 
 void print_by_artist(song_t song, int i)
 {
-    printf(TA_FORMAT_STRING, i, song.artist, song.title, song.seconds/60, song.seconds%60);
+    printf(ARTIST_FORMAT_STRING, i, song.artist, song.title, song.seconds/60, song.seconds%60);
 }
 
 void print_by_time(song_t song, int i)
@@ -321,8 +323,9 @@ void print_by_time(song_t song, int i)
  * Returns: none
  * Globals:	none
  * Description:	Print out a table of all songs in the given list, sorted and formatted.
+ * This essentially is the program logic. The only thing higher level is the main call.
  */
-void printTable(song_t songs[], int length, int cat_asc_code)
+void programOperate(song_t songs[], int length, int cat_asc_code)
 {
     //get category from first digit of cat_asc_code
     int cat = cat_asc_code/10;
@@ -337,27 +340,33 @@ void printTable(song_t songs[], int length, int cat_asc_code)
             selection_sort_title_ascending(songs, length);
             //format_string = TA_FORMAT_STRING;
             pf = print_by_title;
+            //print appropriate heading
+            printf("\t%-40s%-40s%s\n", "Title", "Artist", "Time");
             break;
         case 2:
             selection_sort_artist_ascending(songs, length);
             //format_string = TA_FORMAT_STRING;
             pf = print_by_artist;
+            //print appropriate heading
+            printf("\t%-40s%-40s%s\n", "Artist", "Title", "Time");
             break;
         case 3:
             selection_sort_seconds_ascending(songs, length);
             //format_string = TIME_FORMAT_STRING;
             pf = print_by_time;
+            //print appropriate heading
+            printf("\t%-40s%-40s%s\n", "Time", "Title", "Artist");
             break;
     }
         
         
     if(down){
-        for(index = length - 1; index >= 0; index--){
+        for(index = length - 1; index > 0; index--){
             pf(songs[index], length - index);
         }
     }
     else{
-        for(index = 0; index < length; index++){
+        for(index = 1; index < length; index++){
             pf(songs[index], index);
         }
     }

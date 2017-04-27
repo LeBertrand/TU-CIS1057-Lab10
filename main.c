@@ -4,7 +4,7 @@
 
 int main()
 {
-    song_t songs[200];
+    song_t songs[100];
     FILE* list;
     
     list = fopen("album.txt", "r");
@@ -13,7 +13,7 @@ int main()
     
     int sort_code = prompt_sort();
     
-    printTable(songs, num_songs, sort_code);
+    programOperate(songs, num_songs, sort_code);
     
     return EXIT_SUCCESS;
 }
