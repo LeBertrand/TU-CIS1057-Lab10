@@ -1,6 +1,6 @@
-create structure to hold song info
-	create interface for reading text into structure
-create method that can sort song structures by any field
+create structure to hold song info -- works
+	create interface for reading text into structure -- works
+create method that can sort song structures by any field -- driver seems to work
 take user input to decide how to sort
 sort
 print with correct layout

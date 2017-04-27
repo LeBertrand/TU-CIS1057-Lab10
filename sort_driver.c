@@ -22,10 +22,24 @@ main()
 
 	song_t playlist[] = {layla, mr_jones, john_henry};
 
-	selection_sort_title(playlist, 3);
+	selection_sort_title_ascending(playlist, 3);
 	FILE* output = fopen("sort_driver_output.txt", "w");
+	
 	fprintf(output, "%s | ", playlist[0].title);
 	fprintf(output, "%s | ", playlist[1].title);
-	fprintf(output, "%s | ", playlist[2].title);
+	fprintf(output, "%s | \n", playlist[2].title);
+
+	selection_sort_artist_ascending(playlist, 3);
+	
+	fprintf(output, "%s | ", playlist[0].artist);
+	fprintf(output, "%s | ", playlist[1].artist);
+	fprintf(output, "%s | \n", playlist[2].artist);
+	
+	selection_sort_seconds_ascending(playlist, 3);
+	
+	fprintf(output, "%d | ", playlist[0].seconds);
+	fprintf(output, "%d | ", playlist[1].seconds);
+	fprintf(output, "%d | \n", playlist[2].seconds);
+	
 	fclose(output);
 }

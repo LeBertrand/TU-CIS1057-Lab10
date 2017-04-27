@@ -5,10 +5,12 @@
 int main()
 {
     song_t songs[100];
-    FILE* list = fopen("album.txt", "r");
+    FILE* list;
     
-    read_listing(list, songs);
+    list = fopen("album.txt", "r");
     
+    int numSongs = read_listing(list, songs);
     
+    printf("EXIT_SUCCESS");
     return EXIT_SUCCESS;
 }
