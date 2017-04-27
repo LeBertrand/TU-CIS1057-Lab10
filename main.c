@@ -4,13 +4,16 @@
 
 int main()
 {
-    song_t songs[100];
+    song_t songs[200];
     FILE* list;
     
     list = fopen("album.txt", "r");
     
-    int numSongs = read_listing(list, songs);
+    int num_songs = read_listing(list, songs);
     
-    printf("EXIT_SUCCESS");
+    int sort_code = prompt_sort();
+    
+    printTable(songs, num_songs, sort_code);
+    
     return EXIT_SUCCESS;
 }
