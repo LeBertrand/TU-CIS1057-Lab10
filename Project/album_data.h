@@ -201,6 +201,7 @@ void swap_songs( song_t *first_listing, song_t *second_listing)
 
 void print_by_title(song_t song, int i);
 
+
 /*
  * Function:	read_listing
  * Programmer:	Shmuel Jacobs
@@ -212,7 +213,7 @@ void print_by_title(song_t song, int i);
  * Description:	Given a pointer to a file of track listings, read in data
                 and store in a list of song_t structs.
  */
-int read_listing(FILE *input, song_t song_list[])
+int read_listing(FILE *input, song_t song_list[], int lines)
 {
     //keep track of what track reached in the listings
     int song_number = 1;
@@ -223,15 +224,10 @@ int read_listing(FILE *input, song_t song_list[])
     //store next line for decision making
     char next_line[MAX_ALBUM_ARTIST];
     char* done = fgets(next_line, MAX_ALBUM_ARTIST, input) ;
+    int lines_read = 0;
     
     do
     {
-        // //case: reached end of file
-        // if(*done == EOF)
-        // {
-        //     break;
-        // }
-        //case: line doesn't hold a title
         if(next_line[0] != '*')
         {
             song_t track_builder;
@@ -239,23 +235,28 @@ int read_listing(FILE *input, song_t song_list[])
             //get title
             next_line[strlen(next_line) - 1] = '\0';
             strcpy(track_builder.title, next_line);
+            lines_read++;
+            
             //get artist
             fgets(next_line, MAX_ALBUM_ARTIST, input);
             next_line[strlen(next_line) - 1] = '\0';
             strcpy(track_builder.artist, next_line);
+            lines_read++;
+            
             //get time
             fgets(next_line, MAX_ALBUM_ARTIST, input);
             int time = atoi(next_line);
             track_builder.seconds = time;
+            lines_read++;
             
             //put into list
             song_list[song_number - 1] = track_builder;
                 
             //done with this song--advance index by one
             song_number++;
-            done = fgets(next_line, MAX_ALBUM_ARTIST, input) ;
-        }
-    }while(*done != EOF);
+            }
+        done = fgets(next_line, MAX_ALBUM_ARTIST, input) ;
+    }while(lines_read < lines);
     return song_number;
 }
 
@@ -314,7 +315,7 @@ void print_by_time(song_t song, int i)
 }
 
 /*
- * Function:	print_table
+ * Function:	programOperate
  * Programmer:	Shmuel Jacobs
  * Date:	April 26
  * Input:	songs - list of song
