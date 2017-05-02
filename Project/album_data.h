@@ -279,7 +279,7 @@ int prompt_sort()
     printf("Type 1 to sort by title, 2 by artist, or 3 by track length.");
     int cat;
     scanf("%d", &cat);
-    while( 2 < cat || cat < 0){
+    while( 3 < cat || cat < 0){
         printf("Invalid input.");
         printf("Type 1 to sort by title, 2 by artist, or 3 by track length.");
         scanf("%d", &cat);
