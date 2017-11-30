@@ -207,6 +207,7 @@ void print_by_title(song_t song, int i);
  * Programmer:	Shmuel Jacobs
  * Date:	April 26
  * Input:	input - path to file
+            lines - number of lines in fill
  * Outputs:	song_list - array to fill with song_t structures
  * Returns: number of songs read in
  * Globals:	none

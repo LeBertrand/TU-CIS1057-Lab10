@@ -29,5 +29,6 @@ int main()
     int sort_code = prompt_sort();
     programOperate(songs, num_songs, sort_code);
     
+    fclose(list);
     return EXIT_SUCCESS;
 }
